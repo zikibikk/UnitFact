@@ -37,7 +37,8 @@ public class Elf extends Unit{
         return this.nature;
     }
 
-    public Unit getApprentice(){
+    @Override
+    public Unit getInner(){
         System.out.println("Your apprentice, Lord");
         return apprentice;
     }

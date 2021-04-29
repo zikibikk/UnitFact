@@ -12,7 +12,14 @@ import java.util.List;
 
 public class UnitFactory {
 
-    public Unit createUnitByName(boolean isInner, String unitClass) throws ClassNotFoundException, IllegalClassFormatException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchFieldException {
+    public Unit createUnit(String unitClass) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchFieldException, IllegalClassFormatException, ClassNotFoundException {
+        Unit unitByName = createUnitByName(false, unitClass);
+        callMethod(unitByName);
+        makeInnerUnit(unitByName);
+        return unitByName;
+    }
+
+    private Unit createUnitByName(boolean isInner, String unitClass) throws ClassNotFoundException, IllegalClassFormatException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchFieldException {
         Class newUnit;
         if (isInner) {
              newUnit = Class.forName(unitClass);
@@ -36,6 +43,34 @@ public class UnitFactory {
         return null;
     };
 
+    private void callMethod(Unit unit){
+        Arrays.stream(unit.getClass().getDeclaredFields()).forEach(field -> {
+            if (field.getAnnotation(CallMethod.class) != null) {
+                try {
+                    unit.getClass()
+                            .getMethod(field.getAnnotation(CallMethod.class).method(), null)
+                            .invoke(unit,null);
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void makeInnerUnit(Unit unit) throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, IllegalClassFormatException, ClassNotFoundException {
+        Arrays.stream(unit.getClass().getDeclaredFields()).forEach(field -> {
+            if (field.getAnnotation(InnerUnit.class) != null) {
+                try {
+                    field.setAccessible(true);
+                    field.set(unit,createUnitByName(true, field.getType().getTypeName()));
+                } catch (ClassNotFoundException | IllegalClassFormatException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException | NoSuchFieldException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+
     List<Unit> getUnits(int count, String unitClass) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchFieldException, IllegalClassFormatException, ClassNotFoundException {
         Unit u = createUnitByName(false, unitClass);
         List<Unit> units = new ArrayList<>();
@@ -56,34 +91,6 @@ public class UnitFactory {
         return units;
     }
 
-
-    public void callMethod(Unit unit){
-        Arrays.stream(unit.getClass().getDeclaredFields()).forEach(field -> {
-            if (field.getAnnotation(CallMethod.class) != null) {
-                try {
-                    unit.getClass()
-                            .getMethod(field.getAnnotation(CallMethod.class).method(), null)
-                            .invoke(unit,null);
-                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    void makeInnerUnit(Unit unit) throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, IllegalClassFormatException, ClassNotFoundException {
-        Arrays.stream(unit.getClass().getDeclaredFields()).forEach(field -> {
-            if (field.getAnnotation(InnerUnit.class) != null) {
-                try {
-                    field.setAccessible(true);
-                    field.set(unit,createUnitByName(true, field.getType().getTypeName()));
-                } catch (ClassNotFoundException | IllegalClassFormatException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException | NoSuchFieldException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
     int randomInt(int min, int max){
         if(min>=max){
             int tmp = min;
@@ -94,11 +101,4 @@ public class UnitFactory {
         return (int)(min + max*Math.random());
     }
 
-    public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, IllegalClassFormatException, ClassNotFoundException, NoSuchFieldException {
-        UnitFactory unitFactory = new UnitFactory();
-        Unit u = unitFactory.createUnitByName(false,"Elf");
-        unitFactory.callMethod(u);
-        //System.out.println(u.getNature());
-        System.out.println(u.getAbility());
-    }
 }

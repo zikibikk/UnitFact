@@ -37,20 +37,6 @@ public abstract class Unit {
 
     public abstract Integer getLifeExpectancy();
 
-    /*public void generate_nature(){
-        switch (((int) Math.random()*5)%2) {
-            case 0 -> this.nature = Nature.MILITANT;
-            case 1 -> this.nature = Nature.PEACEFUL;
-        }
-    }*/
+    public Unit getInner(){return null;}
 
-    /*public void generate_character(){
-        switch ((int) (Math.random() * 4)) {
-            case 0 -> this.character = Character.ANGRY;
-            case 1 -> this.character = Character.GENEROUS;
-            case 2 -> this.character = Character.IRSCIBLE;
-            case 3 -> this.character = Character.MERCIFUL;
-            default -> this.character = Character.STRICT;
-        }
-    }*/
 }
