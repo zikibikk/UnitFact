@@ -79,7 +79,7 @@ public class UnitFactory {
                 .forEach(field -> {
                     for (int i = 0; i < count; i++) {
                         try {
-                            units.add(createUnitByName(false, unitClass));
+                            units.add(createUnit(unitClass));
                         } catch (ClassNotFoundException | IllegalClassFormatException
                                 | NoSuchMethodException | IllegalAccessException
                                 | InvocationTargetException | NoSuchFieldException
