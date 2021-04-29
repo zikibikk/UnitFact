@@ -11,7 +11,6 @@ public class Main {
         UnitFactory unitFactory = new UnitFactory();
         Unit u = unitFactory.createUnit("Elf");
         Unit f = unitFactory.createUnit("Fairy");
-        System.out.println(f.getInner());
         System.out.println(u.getNature());
         System.out.println(u.getAbility());
         System.out.println(u.getLifeExpectancy());

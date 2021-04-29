@@ -62,7 +62,9 @@ public class UnitFactory {
             if (field.getAnnotation(InnerUnit.class) != null) {
                 try {
                     field.setAccessible(true);
-                    field.set(unit,createUnitByName(true, field.getType().getTypeName()));
+                    Unit unitByName = createUnitByName(true, field.getType().getTypeName());
+                    callMethod(unitByName);
+                    field.set(unit,unitByName);
                 } catch (ClassNotFoundException | IllegalClassFormatException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException | NoSuchFieldException e) {
                     e.printStackTrace();
                 }
