@@ -43,6 +43,17 @@ public class Elf extends Unit{
         return apprentice;
     }
 
+    @Override
+    public String toString() {
+        return "Elf{" +
+                "lifeExpectancy=" + lifeExpectancy +
+                ", nature=" + nature +
+                ", character=" + character +
+                ", apprentice=" + apprentice +
+                ", elfArmy=" + elfArmy +
+                '}';
+    }
+
     public void generate_nature(){
         switch (((int) Math.random()*5)%2) {
             case 0 -> this.nature = Nature.MILITANT;
@@ -59,5 +70,4 @@ public class Elf extends Unit{
             default -> this.character = Character.STRICT;
         }
     }
-
 }

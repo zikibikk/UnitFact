@@ -17,8 +17,7 @@ public class Main {
         System.out.println(u.getLifeExpectancy());
         List<Unit> elf = unitFactory.getUnits(3, "Elf");
         elf.forEach(el->{
-            el.getInner();
-            System.out.println(el.getLifeExpectancy());
+            System.out.println(el.getInner());
         });
         u.getInner();
     }

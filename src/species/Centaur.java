@@ -43,6 +43,17 @@ public class Centaur extends Unit{
         return slave;
     }
 
+    @Override
+    public String toString() {
+        return "Centaur{" +
+                "lifeExpectancy=" + lifeExpectancy +
+                ", nature=" + nature +
+                ", character=" + character +
+                ", slave=" + slave +
+                ", centaurArmy=" + centaurArmy +
+                '}';
+    }
+
     public void generate_nature(){
         switch (((int) Math.random()*5)%2) {
             case 0 -> this.nature = Nature.MILITANT;
