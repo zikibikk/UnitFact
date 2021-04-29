@@ -11,7 +11,7 @@ public class Main {
         UnitFactory unitFactory = new UnitFactory();
         Unit u = unitFactory.createUnitByName(false,"Elf");
         unitFactory.callMethod(u);
-        //unitFactory.makeInnerUnit(u);
+        unitFactory.makeInnerUnit(u);
         System.out.println(u.getNature());
         System.out.println(u.getAbility());
         System.out.println(u.getLifeExpectancy());

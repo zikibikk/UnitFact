@@ -75,11 +75,8 @@ public class UnitFactory {
         Arrays.stream(unit.getClass().getDeclaredFields()).forEach(field -> {
             if (field.getAnnotation(InnerUnit.class) != null) {
                 try {
-                    System.out.println("type name " + field.getType().getTypeName());
-                    System.out.println(field.getType().getName());
                     field.setAccessible(true);
-                    String str = field.getType().getName().substring(8);
-                    field.set(field.getClass(),createUnitByName(false, str));
+                    field.set(unit,createUnitByName(true, field.getType().getTypeName()));
                 } catch (ClassNotFoundException | IllegalClassFormatException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException | NoSuchFieldException e) {
                     e.printStackTrace();
                 }
